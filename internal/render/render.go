@@ -8,21 +8,26 @@ import (
 	"path/filepath"
 
 	"github.com/devj1003/scribble/internal/config"
+	"github.com/devj1003/scribble/internal/models"
 )
 
-var App *config.AppConfig
+var app *config.AppConfig
 
 // NewTemplates sets the config for the template package
 func NewTemplates(a *config.AppConfig) {
-	App = a
+	app = a
+}
+
+func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+	return td
 }
 
 // RenderTemplate renders a template
-func RenderTemplate(w http.ResponseWriter, tmpl string) {
+func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 	var tc map[string]*template.Template
-	if App.UseCache {
+	if app.UseCache {
 
-		tc = App.TemplateCache
+		tc = app.TemplateCache
 	} else {
 		tc, _ = CreateTemplateCache()
 	}
@@ -33,8 +38,8 @@ func RenderTemplate(w http.ResponseWriter, tmpl string) {
 	}
 
 	buf := new(bytes.Buffer)
-
-	_ = t.Execute(buf, nil)
+	td = AddDefaultData(td)
+	_ = t.Execute(buf, td)
 
 	// render the template
 	_, err := buf.WriteTo(w)
