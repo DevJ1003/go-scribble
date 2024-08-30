@@ -152,7 +152,7 @@ const Icon = class {
             ? h("div", { class: "icon-inner", innerHTML: this.svgContent })
             : h("div", { class: "icon-inner" }))));
     }
-    static get assetsDirs() { return ["svg"]; }
+    static get /staticDirs() { return ["svg"]; }
     get el() { return getElement(this); }
     static get watchers() { return {
         "name": ["loadIcon"],

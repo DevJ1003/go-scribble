@@ -41,10 +41,3 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	})
 
 }
-
-// Register is the handler for the home page
-func (m *Repository) Register(w http.ResponseWriter, r *http.Request) {
-
-	render.RenderTemplate(w, "register.page.tmpl", &models.TemplateData{})
-
-}

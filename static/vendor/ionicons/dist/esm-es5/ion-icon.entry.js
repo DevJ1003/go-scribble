@@ -152,7 +152,7 @@ var Icon = /** @class */ (function () {
             ? h("div", { class: "icon-inner", innerHTML: this.svgContent })
             : h("div", { class: "icon-inner" }))));
     };
-    Object.defineProperty(Icon, "assetsDirs", {
+    Object.defineProperty(Icon, "/staticDirs", {
         get: function () { return ["svg"]; },
         enumerable: false,
         configurable: true

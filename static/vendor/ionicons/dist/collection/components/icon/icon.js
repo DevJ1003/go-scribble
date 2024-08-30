@@ -84,7 +84,7 @@ export class Icon {
     static get styleUrls() { return {
         "$": ["icon.css"]
     }; }
-    static get assetsDirs() { return ["svg"]; }
+    static get /staticDirs() { return ["svg"]; }
     static get properties() { return {
         "mode": {
             "type": "string",
