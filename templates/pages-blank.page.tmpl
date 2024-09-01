@@ -1,145 +1,8 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-      <title>Scribble | Digital Notes</title>
-      
-      <!-- Favicon -->
-      <link rel="shortcut icon" href="/static/images/favicon.ico" />
-      <link rel="stylesheet" href="/static/css/backend-plugin.min.css?v=1.0.0">
-      <link rel="stylesheet" href="/static/css/backend.css?v=1.0.0">
-      <link rel="stylesheet" href="/static/vendor/@fortawesome/fontawesome-free/css/all.min.css">
-      <link rel="stylesheet" href="/static/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
-      <link rel="stylesheet" href="/static/vendor/remixicon/fonts/remixicon.css">
-      <link rel="stylesheet" href="/static/vendor/@icon/dripicons/dripicons.css">  </head>
-  <body class="noteplus-layout  ">
-    <!-- loader Start -->
-    <div id="loading">
-          <div id="loading-center">
-          </div>
-    </div>
-    <!-- loader END -->
-    <!-- Wrapper Start -->
-    <div class="wrapper">
-       <div class="iq-top-navbar">
-          <div class="iq-navbar-custom">
-              <nav class="navbar navbar-expand-lg navbar-light p-0">
-                  <div class="iq-navbar-logo d-flex align-items-center justify-content-between">
-                      <i class="ri-menu-line wrapper-menu"></i>
-                      <a href="index.html" class="header-logo">
-                              <img src="/static/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo">
-                        </a>
-                  </div>    
-              </nav>
-          </div>
-      </div>      
-      <div class="iq-sidebar  sidebar-default ">
-          <div class="iq-sidebar-logo d-flex align-items-center justify-content-between">
-              <a href="index.html" class="header-logo">
-                  <img src="/static/images/logo.png" class="img-fluid rounded-normal light-logo" alt="logo"> <h4 class="logo-title ml-3">Scribble</h4>
-              </a>
-              <div class="iq-menu-bt-sidebar">
-                  <i class="las la-times wrapper-menu"></i>
-              </div>
-          </div>    
-          <div class="sidebar-caption dropdown">
-              <a class="iq-user-toggle d-flex align-items-center justify-content-between" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img src="/static/images/user/1.jpg" class="img-fluid rounded avatar-50 mr-3" alt="user">
-                  <div class="caption">
-                      <h6 class="mb-0 line-height">Hello, User!</h6>
-                  </div>
-              </a>
-          </div>
-          <div class="data-scrollbar" data-scroll="1">
-              <nav class="iq-sidebar-menu">
-                  <ul id="iq-sidebar-toggle" class="iq-menu">
-                      <li class="active">
-                            <a href="index.html" class="svg-icon">
-                                <i>
-                                    <svg class="svg-icon" id="iq-main-1" width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z" />
-                                    </svg>
-                                </i>
-                                <span>Your Notes</span>
-                            </a>
-                      </li>
-                  
-                <ul id="iq-sidebar-toggle" class="iq-menu">
-                    <li class="active">
-                          <a href="user-profile.html" class="svg-icon">
-                            <i class="lar la-user-circle font-size-20 mr-1"></i>
-                              <span>My Profile</span>
-                          </a>
-                    </li>
-                </ul>
-                <ul id="iq-sidebar-toggle" class="iq-menu">
-                    <li class="active">
-                          <a href="user-profile-edit.html" class="svg-icon">
-                            <i class="las la-user-edit font-size-20 mr-1"></i>
-                              <span>Edit Profile</span>
-                          </a>
-                    </li>
-                </ul>
-                <ul id="iq-sidebar-toggle" class="iq-menu">
-                    <li class="active">
-                          <a href="#" class="svg-icon">
-                            <i class="las la-sign-out-alt font-size-20 mr-1"></i>
-                            <span>Logout</span>
-                          </a>
-                    </li>
-                </ul>
-               
-                <li class="">
-                    <a href="#notebooks" class="collapsed svg-icon" data-toggle="collapse" aria-expanded="false">
-                        <i>
-                            <svg width="20" class="svg-icon" id="iq-main-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19a2 2 0 01-2-2V7a2 2 0 012-2h4l2 2h4a2 2 0 012 2v1M5 19h14a2 2 0 002-2v-5a2 2 0 00-2-2H9a2 2 0 00-2 2v5a2 2 0 01-2 2z" />
-                            </svg>
-                        </i>
-                        <span>Other pages</span>
-                        <i class="las la-angle-right iq-arrow-right arrow-active"></i>
-                    </a>
-                    <ul id="notebooks" class="iq-submenu collapse" data-parent="#iq-sidebar-toggle">
-                        <li class="">
-                            <a href="auth-sign-in.html" class="svg-icon">
-                                <i>
-                                    <svg width="20" class="svg-icon" id="iq-main-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                                    </svg>
-                                </i>
-                                <span>sign-in & sign-up</span>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="user-list.html" class="svg-icon">
-                                <i>
-                                    <svg width="20" class="svg-icon" id="iq-main-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                                    </svg>
-                                </i>
-                                <span>user list</span>
-                            </a>
-                        </li>
-                        <li class="">
-                            <a href="pages-blank-page.html" class="svg-icon">
-                                <i>
-                                    <svg width="20" class="svg-icon" id="iq-main-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                                    </svg>
-                                </i>
-                                <span>blank page</span>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
+{{template "base" .}}
+
+{{define "content"}}
 
 
-            </ul>
-
-              </nav>
-          </div>
-      </div>  
       <!-- CONTENT -->
       <div class="content-page">
         <div class="container-fluid">
@@ -290,47 +153,140 @@
          <div class="row">
             <div class="col-lg-12">
                Here Add Your HTML Content.....
+
+
+
+
+
+
+
+
+
+                   <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Quill CSS -->
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <style>
+        .container {
+            margin-top: 30px;
+        }
+        .note-form {
+            max-width: 800px;
+            margin: auto;
+        }
+        .form-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-control {
+            border-radius: 0.25rem;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+            color: white;
+        }
+        .quill-editor {
+            height: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="note-form">
+            <h1 class="text-center form-title">Create a Note</h1>
+            <form id="noteForm">
+                <div class="form-group">
+                    <label for="title">Note Title</label>
+                    <input type="text" class="form-control" id="title" placeholder="Enter note title" required>
+                </div>
+                <div class="form-group">
+                    <label for="content">Note Content</label>
+                    <div id="content" class="quill-editor"></div>
+                    <input type="hidden" id="hiddenContent" name="content">
+                </div>
+                <button type="submit" class="btn btn-custom">Save Note</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Quill JS -->
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        // Initialize Quill editor
+        var quill = new Quill('#content', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'header': '1' }, { 'header': '2' }],
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'align': [] }],
+                    ['link', 'image'],
+                    [{ 'color': [] }, { 'background': [] }]
+                ]
+            }
+        });
+
+        // Handle form submission
+        document.getElementById('noteForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const title = document.getElementById('title').value;
+            const content = quill.root.innerHTML;
+
+            // Simple validation
+            if (!title || !content) {
+                alert('Please fill in both the title and content.');
+                return;
+            }
+
+            // Set hidden input value
+            document.getElementById('hiddenContent').value = content;
+
+            // For demonstration, logging the note to the console
+            console.log('Note Title:', title);
+            console.log('Note Content:', content);
+
+            // Reset the form
+            document.getElementById('noteForm').reset();
+            quill.root.innerHTML = '';
+        });
+    </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
             </div>
          </div>
       </div>
       </div>
     </div>
-    <!-- Wrapper End-->
-    <footer class="iq-footer">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-lg-6">
-                    <ul class="list-inline mb-0">
-                        <li class="list-inline-item"><a href="../backend/privacy-policy.html">Privacy Policy</a></li>
-                        <li class="list-inline-item"><a href="../backend/terms-of-service.html">Terms of Use</a></li>
-                    </ul>
-                </div>
-                <div class="col-lg-6 text-right">
-                    <span class="text-secondary mr-1"><script>document.write(new Date().getFullYear())</script>©</span> <a href="#" class="">NotePlus</a>.
-                </div>
-            </div>
-        </div>
-    </footer>
-    <!-- Backend Bundle JavaScript -->
-    <script src="/static/js/backend-bundle.min.js"></script>
-    
-    <!-- Flextree Javascript-->
-    <script src="/static/js/flex-tree.min.js"></script>
-    <script src="/static/js/tree.js"></script>
-    
-    <!-- Table Treeview JavaScript -->
-    <script src="/static/js/table-treeview.js"></script>
-    
-    <!-- SweetAlert JavaScript -->
-    <script src="/static/js/sweetalert.js"></script>
-    
-    <!-- Chart Custom JavaScript -->
-    <script src="/static/js/chart-custom.js"></script>
-    
-    <!-- slider JavaScript -->
-    <script src="/static/js/slider.js"></script>
-    
-    <!-- app JavaScript -->
-    <script src="/static/js/app.js"></script>
-  </body>
-</html>
+
+
+{{end}}

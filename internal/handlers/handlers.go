@@ -41,3 +41,67 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	})
 
 }
+
+// Register is the handler for the home page
+func (m *Repository) Register(w http.ResponseWriter, r *http.Request) {
+
+	// sending data to template
+	render.RenderTemplate(w, "register.page.tmpl", &models.TemplateData{})
+
+}
+
+// Login is the handler for the home page
+func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
+
+	// sending data to template
+	render.RenderTemplate(w, "login.page.tmpl", &models.TemplateData{})
+
+}
+
+// Blank is the handler for the home page
+func (m *Repository) Blank(w http.ResponseWriter, r *http.Request) {
+
+	// sending data to template
+	render.RenderTemplate(w, "pages-blank.page.tmpl", &models.TemplateData{})
+
+}
+
+// Error500 is the handler for the home page
+func (m *Repository) Error500(w http.ResponseWriter, r *http.Request) {
+
+	// sending data to template
+	render.RenderTemplate(w, "pages-error-500.page.tmpl", &models.TemplateData{})
+
+}
+
+// Errorpage is the handler for the home page
+func (m *Repository) Errorpage(w http.ResponseWriter, r *http.Request) {
+
+	// sending data to template
+	render.RenderTemplate(w, "pages-error.page.tmpl", &models.TemplateData{})
+
+}
+
+// UserList is the handler for the home page
+func (m *Repository) UserList(w http.ResponseWriter, r *http.Request) {
+
+	// sending data to template
+	render.RenderTemplate(w, "user-list.page.tmpl", &models.TemplateData{})
+
+}
+
+// ProfileEdit is the handler for the home page
+func (m *Repository) ProfileEdit(w http.ResponseWriter, r *http.Request) {
+
+	// sending data to template
+	render.RenderTemplate(w, "user-profile-edit.page.tmpl", &models.TemplateData{})
+
+}
+
+// ProfilePage is the handler for the home page
+func (m *Repository) ProfilePage(w http.ResponseWriter, r *http.Request) {
+
+	// sending data to template
+	render.RenderTemplate(w, "user-profile.page.tmpl", &models.TemplateData{})
+
+}
