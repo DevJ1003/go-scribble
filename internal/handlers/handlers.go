@@ -42,7 +42,7 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// Register is the handler for the home page
+// Register is the handler for the register page
 func (m *Repository) Register(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
@@ -50,7 +50,7 @@ func (m *Repository) Register(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// Login is the handler for the home page
+// Login is the handler for the login page
 func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
@@ -58,7 +58,23 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// Blank is the handler for the home page
+// CreateNewNote is the handler for the create-note page
+func (m *Repository) CreateNewNote(w http.ResponseWriter, r *http.Request) {
+
+	// sending data to template
+	render.RenderTemplate(w, "create-note.page.tmpl", &models.TemplateData{})
+
+}
+
+// EditNote is the handler for the edit-note page
+func (m *Repository) EditNote(w http.ResponseWriter, r *http.Request) {
+
+	// sending data to template
+	render.RenderTemplate(w, "edit-note.page.tmpl", &models.TemplateData{})
+
+}
+
+// Blank is the handler for the blank page
 func (m *Repository) Blank(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
@@ -66,7 +82,7 @@ func (m *Repository) Blank(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// Error500 is the handler for the home page
+// Error500 is the handler for the error500 page
 func (m *Repository) Error500(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
@@ -74,7 +90,7 @@ func (m *Repository) Error500(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// Errorpage is the handler for the home page
+// Errorpage is the handler for the pages-error page
 func (m *Repository) Errorpage(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
@@ -82,7 +98,7 @@ func (m *Repository) Errorpage(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// UserList is the handler for the home page
+// UserList is the handler for the user-list page
 func (m *Repository) UserList(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
@@ -90,7 +106,7 @@ func (m *Repository) UserList(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// ProfileEdit is the handler for the home page
+// ProfileEdit is the handler for the profile-edit page
 func (m *Repository) ProfileEdit(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
@@ -98,7 +114,7 @@ func (m *Repository) ProfileEdit(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// ProfilePage is the handler for the home page
+// ProfilePage is the handler for the user-profile page
 func (m *Repository) ProfilePage(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template

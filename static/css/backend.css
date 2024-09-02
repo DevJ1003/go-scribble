@@ -13041,8 +13041,9 @@ body.swal2-toast-shown .swal2-container {
   border-radius: 50%; }
 
 .noteplus-layout .ql-toolbar.ql-snow {
-  position: absolute;
-  top: 18px; }
+  /* position: absolute;
+  top: 18px; */
+}
 
 /*!
  * animate.css - https://animate.style/

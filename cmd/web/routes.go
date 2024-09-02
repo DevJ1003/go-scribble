@@ -19,6 +19,8 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/", handlers.Repo.Home)
 	mux.Get("/register", handlers.Repo.Register)
 	mux.Get("/login", handlers.Repo.Login)
+	mux.Get("/createnote", handlers.Repo.CreateNewNote)
+	mux.Get("/editnote", handlers.Repo.EditNote)
 	mux.Get("/blank", handlers.Repo.Blank)
 	mux.Get("/error500", handlers.Repo.Error500)
 	mux.Get("/errorpage", handlers.Repo.Errorpage)
