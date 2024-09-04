@@ -66,6 +66,14 @@ func (m *Repository) CreateNewNote(w http.ResponseWriter, r *http.Request) {
 
 }
 
+// ViewNote is the handler for the create-note page
+func (m *Repository) ViewNote(w http.ResponseWriter, r *http.Request) {
+
+	// sending data to template
+	render.RenderTemplate(w, "view-note.page.tmpl", &models.TemplateData{})
+
+}
+
 // EditNote is the handler for the edit-note page
 func (m *Repository) EditNote(w http.ResponseWriter, r *http.Request) {
 
