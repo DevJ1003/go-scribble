@@ -36,7 +36,7 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	stringMap["test"] = "Hello, again!"
 
 	// sending data to template
-	render.RenderTemplate(w, "index.page.tmpl", &models.TemplateData{
+	render.RenderTemplate(w, r, "index.page.tmpl", &models.TemplateData{
 		StringMap: stringMap,
 	})
 
@@ -46,7 +46,7 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) Register(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, "register.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "register.page.tmpl", &models.TemplateData{})
 
 }
 
@@ -54,7 +54,7 @@ func (m *Repository) Register(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, "login.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "login.page.tmpl", &models.TemplateData{})
 
 }
 
@@ -62,15 +62,14 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) CreateNewNote(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, "create-note.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "create-note.page.tmpl", &models.TemplateData{})
 
 }
 
 // PostCreateNewNote is the handler for the create-note page
 func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 
-	// sending data to template
-	render.RenderTemplate(w, "create-note.page.tmpl", &models.TemplateData{})
+	w.Write([]byte("posted"))
 
 }
 
@@ -78,7 +77,7 @@ func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) ViewNote(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, "view-note.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "view-note.page.tmpl", &models.TemplateData{})
 
 }
 
@@ -86,7 +85,7 @@ func (m *Repository) ViewNote(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) EditNote(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, "edit-note.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "edit-note.page.tmpl", &models.TemplateData{})
 
 }
 
@@ -94,7 +93,7 @@ func (m *Repository) EditNote(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) Blank(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, "pages-blank.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "pages-blank.page.tmpl", &models.TemplateData{})
 
 }
 
@@ -102,7 +101,7 @@ func (m *Repository) Blank(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) Error500(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, "pages-error-500.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "pages-error-500.page.tmpl", &models.TemplateData{})
 
 }
 
@@ -110,7 +109,7 @@ func (m *Repository) Error500(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) Errorpage(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, "pages-error.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "pages-error.page.tmpl", &models.TemplateData{})
 
 }
 
@@ -118,7 +117,7 @@ func (m *Repository) Errorpage(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) UserList(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, "user-list.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "user-list.page.tmpl", &models.TemplateData{})
 
 }
 
@@ -126,7 +125,7 @@ func (m *Repository) UserList(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) ProfileEdit(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, "user-profile-edit.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "user-profile-edit.page.tmpl", &models.TemplateData{})
 
 }
 
@@ -134,6 +133,6 @@ func (m *Repository) ProfileEdit(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) ProfilePage(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, "user-profile.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "user-profile.page.tmpl", &models.TemplateData{})
 
 }
