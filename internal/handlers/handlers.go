@@ -69,7 +69,9 @@ func (m *Repository) CreateNewNote(w http.ResponseWriter, r *http.Request) {
 // PostCreateNewNote is the handler for the create-note page
 func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 
-	w.Write([]byte("posted"))
+	// w.Write([]byte("posted"))
+	// sending data to template
+	render.RenderTemplate(w, r, "create-note.page.tmpl", &models.TemplateData{})
 
 }
 

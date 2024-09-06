@@ -7,15 +7,24 @@
       <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
       <title>Scribble | Digital Notes</title>
       
-      <!-- Favicon -->
-      <link rel="shortcut icon" href="/static/images/favicon.ico">
-      <link rel="stylesheet" href="/static/css/backend-plugin.min.css?v=1.0.0">
-      <link rel="stylesheet" type="text/css" href="/static/css/backend.css?v=1.0.0">
-      <link rel="stylesheet" type="text/css" href="/static/vendor/@fortawesome/fontawesome-free/css/all.min.css">
-      <link rel="stylesheet" type="text/css" href="/static/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
-      <link rel="stylesheet" type="text/css" href="/static/vendor/remixicon/fonts/remixicon.css">
-      <link rel="stylesheet" type="text/css" href="/static/vendor/@icon/dripicons/dripicons.css">
-      <link rel="stylesheet" type="text/css" href="/static/images/logo.png">
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="/static/images/favicon.ico">
+    <link rel="stylesheet" href="/static/css/backend-plugin.min.css?v=1.0.0">
+    <link rel="stylesheet" type="text/css" href="/static/css/backend.css?v=1.0.0">
+    <link rel="stylesheet" type="text/css" href="/static/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/vendor/line-awesome/dist/line-awesome/css/line-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="/static/vendor/remixicon/fonts/remixicon.css">
+    <link rel="stylesheet" type="text/css" href="/static/vendor/@icon/dripicons/dripicons.css">
+    <link rel="stylesheet" type="text/css" href="/static/images/logo.png">
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/notie/dist/notie.min.css">
+    <style>
+    .notie-container {
+      /* margin-top: 55px; */
+    }
+    .place-right {
+        float: right;
+    }
+  </style>
 
 {{block "css" .}}
 
@@ -104,7 +113,7 @@
             </nav>
         </div>
       </div>     
-<body class="noteplus-layout">
+<body>
 
 {{block "content" .}}
 
@@ -148,6 +157,9 @@
     
     <!-- app JavaScript -->
     <script src="/static/js/app.js"></script>
+
+    <!-- notie JavaScript -->
+    <script src="https://unpkg.com/notie"></script>
 
 {{block "js" .}}
 {{end}}
