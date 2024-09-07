@@ -1,0 +1,11 @@
+mode: set
+github.com/devj1003/scribble/cmd/web/main.go:21.13,24.16 2 0
+github.com/devj1003/scribble/cmd/web/main.go:24.16,26.3 1 0
+github.com/devj1003/scribble/cmd/web/main.go:28.2,36.16 4 0
+github.com/devj1003/scribble/cmd/web/main.go:36.16,38.3 1 0
+github.com/devj1003/scribble/cmd/web/main.go:41.18,55.16 9 1
+github.com/devj1003/scribble/cmd/web/main.go:55.16,58.3 2 0
+github.com/devj1003/scribble/cmd/web/main.go:60.2,70.12 6 1
+github.com/devj1003/scribble/cmd/web/middleware.go:10.45,21.2 3 1
+github.com/devj1003/scribble/cmd/web/middleware.go:24.50,26.2 1 1
+github.com/devj1003/scribble/cmd/web/routes.go:12.49,37.2 20 1
