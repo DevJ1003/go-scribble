@@ -32,13 +32,9 @@ func NewHandlers(r *Repository) {
 // Home is the handler for the home page
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	// perform some logic
-	stringMap := make(map[string]string)
-	stringMap["test"] = "Hello, again!"
 
 	// sending data to template
-	render.RenderTemplate(w, r, "index.page.tmpl", &models.TemplateData{
-		StringMap: stringMap,
-	})
+	render.RenderTemplate(w, r, "index.page.tmpl", &models.TemplateData{})
 
 }
 
