@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/devj1003/scribble/internal/config"
+	"github.com/devj1003/scribble/internal/forms"
 	"github.com/devj1003/scribble/internal/models"
 	"github.com/devj1003/scribble/internal/render"
 )
@@ -58,15 +59,15 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) CreateNewNote(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, r, "create-note.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "create-note.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+	})
 
 }
 
 // PostCreateNewNote is the handler for the create-note page
 func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 
-	// w.Write([]byte("posted"))
-	// sending data to template
 	render.RenderTemplate(w, r, "create-note.page.tmpl", &models.TemplateData{})
 
 }

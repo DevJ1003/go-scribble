@@ -2,42 +2,18 @@
 
 {{define "css"}}
 
-<!-- Quill CSS -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <!-- Custom CSS -->
-    <style>
-        .container {
-            margin-top: 30px;
-        }
-        .note-form {
-            max-width: 800px;
-            margin: auto;
-        }
-        .form-title {
-            font-size: 24px;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-control {
-            border-radius: 0.25rem;
-        }
-        .btn-custom {
-            background-color: #007bff;
-            color: white;
-        }
-        .btn-custom:hover {
-            background-color: #0056b3;
-            color: white;
-        }
-        .quill-editor {
-            height: 300px;
-        }
-    </style>
+<!-- Froala Editor CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/froala-editor@4.0.15/css/froala_editor.pkgd.min.css">
+    
+    <!-- Froala Editor JS -->
+    <script src="https://cdn.jsdelivr.net/npm/froala-editor@4.0.15/js/froala_editor.pkgd.min.js"></script>
+    
+    <!-- jQuery (required for Froala) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 {{end}}
 
 {{define "content"}}
+ <input type="hidden" id="submit" value="false">
 
 <div class="content-page">
     <div class="container-fluid">
@@ -52,22 +28,23 @@
             </div>
             <div class="container-fluid">
                 <div class="col-lg-15">
-                
-        <div class="note-form">
-            <form id="noteForm">
+               
+
+        <div class="noteform">
+            <form action="/updatenote" method="post">
+            <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
                 <div class="form-group">
                     <label for="title">Note Title</label>
-                    <input type="text" class="form-control" id="title" placeholder="Enter note title" required>
+                    <input name="title" type="text" class="form-control" id="title" placeholder="Enter note title" required>
                 </div>
                 <div class="form-group">
-                    <label for="content">Note Content</label>
-                    <div id="content" class="quill-editor"></div>
-                    <input type="hidden" id="hiddenContent" name="content">
+                    <textarea id="texteditor" name="content"></textarea>
                 </div>
-                <button type="submit" class="btn btn-custom">Save Note</button>
+                <button type="submit" class="btn btn-primary">Update</button>
             </form>
             <br>
         </div>
+          
                 </div>
             </div>
         </div>
@@ -79,50 +56,26 @@
 
 
 {{define "js"}}
-<!-- Bootstrap JS and dependencies -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- Quill JS -->
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script>
-        // Initialize Quill editor
-        var quill = new Quill('#content', {
-            theme: 'snow',
-            modules: {
-                toolbar: [
-                    [{ 'header': '1' }, { 'header': '2' }],
-                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-                    ['bold', 'italic', 'underline'],
-                    [{ 'align': [] }],
-                    ['link', 'image'],
-                    [{ 'color': [] }, { 'background': [] }]
-                ]
-            }
+<script>
+        $(document).ready(function() {
+            // Initialize Froala Editor
+            new FroalaEditor('#texteditor', {
+                // You can add additional configuration options here
+            });
         });
 
-        // Handle form submission
-        document.getElementById('noteForm').addEventListener('submit', function(event) {
-            event.preventDefault();
-            const title = document.getElementById('title').value;
-            const content = quill.root.innerHTML;
+        window.onload = function(e){ 
+            if (document.getElementById("submit").value == "true"){
+                notify("This is my message", "success");
+        } 
+    }
 
-            // Simple validation
-            if (!title || !content) {
-                alert('Please fill in both the title and content.');
-                return;
-            }
-
-            // Set hidden input value
-            document.getElementById('hiddenContent').value = content;
-
-            // For demonstration, logging the note to the console
-            console.log('Note Title:', title);
-            console.log('Note Content:', content);
-
-            // Reset the form
-            document.getElementById('noteForm').reset();
-            quill.root.innerHTML = '';
+        function notify(msg, msgType) {
+           Swal.fire({
+            title: msg,
+            icon: msgType
         });
+
+        }
     </script>
 {{end}}
