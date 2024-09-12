@@ -43,7 +43,7 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 func (m *Repository) Register(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, r, "register.page.tmpl", &models.TemplateData{})
+	render.RenderShortTemplate(w, r, "register.page.tmpl", &models.TemplateData{})
 
 }
 

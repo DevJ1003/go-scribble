@@ -66,6 +66,12 @@ func run() error {
 		return err
 	}
 
+	tc, err = render.CreateShortTemplateCache()
+	if err != nil {
+		log.Fatal("cannot create template cache")
+		return err
+	}
+
 	app.TemplateCache = tc
 	app.UseCache = false
 
