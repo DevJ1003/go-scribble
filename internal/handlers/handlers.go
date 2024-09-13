@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/devj1003/scribble/internal/config"
@@ -58,9 +59,14 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 // CreateNewNote is the handler for the create-note page
 func (m *Repository) CreateNewNote(w http.ResponseWriter, r *http.Request) {
 
+	var emptyReservation models.CreateNote
+	data := make(map[string]interface{})
+	data["createnote"] = emptyReservation
+
 	// sending data to template
 	render.RenderTemplate(w, r, "create-note.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
+		Data: data,
 	})
 
 }
@@ -68,7 +74,32 @@ func (m *Repository) CreateNewNote(w http.ResponseWriter, r *http.Request) {
 // PostCreateNewNote is the handler for the create-note page
 func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 
-	render.RenderTemplate(w, r, "create-note.page.tmpl", &models.TemplateData{})
+	err := r.ParseForm()
+	if err != nil {
+		log.Println(err)
+		return
+	}
+
+	createnote := models.CreateNote{
+		Title:   r.Form.Get("titel"),
+		Content: r.Form.Get("content"),
+	}
+
+	form := forms.New(r.PostForm)
+
+	form.Has("title", r)
+	if !form.Valid() {
+		data := make(map[string]interface{})
+		data["createnote"] = createnote
+
+		// sending data to template
+		render.RenderTemplate(w, r, "create-note.page.tmpl", &models.TemplateData{
+			Form: form,
+			Data: data,
+		})
+
+		return
+	}
 
 }
 

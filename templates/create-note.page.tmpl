@@ -31,14 +31,24 @@
                
 
         <div class="noteform">
+
+        {{$createnote := index .Data "createnote"}}
+        
             <form action="/createnote" method="post">
             <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
                 <div class="form-group">
                     <label for="title">Note Title</label>
-                    <input name="title" type="text" class="form-control" id="title" placeholder="Enter note title" required>
+                    
+                    {{with .Form.Errors.Get "title"}}
+                        <label class="text-danger">{{.}}</label>
+                    {{end}}
+                    
+                     
+                    <input class="form-control {{with .Form.Errors.Get "title"}} is-invalid {{end}}" 
+                        name="title" type="text" id="title" autocomplete="off" placeholder="Enter note title" value="{{$createnote.Title}}" required>
                 </div>
                 <div class="form-group">
-                    <textarea id="texteditor" name="content"></textarea>
+                    <textarea id="texteditor" name="content" id="content""></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Save Note</button>
             </form>
