@@ -59,14 +59,14 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 // CreateNewNote is the handler for the create-note page
 func (m *Repository) CreateNewNote(w http.ResponseWriter, r *http.Request) {
 
-	// var emptyReservation models.CreateNote
-	// data := make(map[string]interface{})
-	// data["createnote"] = emptyReservation
+	var emptyReservation models.CreateNote
+	data := make(map[string]interface{})
+	data["createnote"] = emptyReservation
 
 	// sending data to template
 	render.RenderTemplate(w, r, "create-note.page.tmpl", &models.TemplateData{
 		Form: forms.New(nil),
-		// Data: data,
+		Data: data,
 	})
 
 }
