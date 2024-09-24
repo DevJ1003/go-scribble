@@ -81,13 +81,14 @@ func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	createnote := models.CreateNote{
-		Title:   r.Form.Get("titel"),
+		Title:   r.Form.Get("title"),
 		Content: r.Form.Get("content"),
 	}
 
 	form := forms.New(r.PostForm)
+	form.Required("title", "content")
+	// form.Has("title", r)
 
-	form.Has("title", r)
 	if !form.Valid() {
 		data := make(map[string]interface{})
 		data["createnote"] = createnote
