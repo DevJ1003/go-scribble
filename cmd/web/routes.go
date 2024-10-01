@@ -27,7 +27,6 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/error500", handlers.Repo.Error500)
 	mux.Get("/errorpage", handlers.Repo.Errorpage)
 	mux.Get("/userlist", handlers.Repo.UserList)
-	mux.Get("/profileedit", handlers.Repo.ProfileEdit)
 	mux.Get("/profilepage", handlers.Repo.ProfilePage)
 
 	fileServer := http.FileServer(http.Dir("../../static/"))

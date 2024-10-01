@@ -1,11 +1,11 @@
 package handlers
 
 import (
-	"log"
 	"net/http"
 
 	"github.com/devj1003/scribble/internal/config"
 	"github.com/devj1003/scribble/internal/forms"
+	"github.com/devj1003/scribble/internal/helpers"
 	"github.com/devj1003/scribble/internal/models"
 	"github.com/devj1003/scribble/internal/render"
 )
@@ -76,7 +76,8 @@ func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 
 	err := r.ParseForm()
 	if err != nil {
-		log.Println(err)
+		// log.Println(err)
+		helpers.ServerError(w, err)
 		return
 	}
 
@@ -152,18 +153,10 @@ func (m *Repository) UserList(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// ProfileEdit is the handler for the profile-edit page
-func (m *Repository) ProfileEdit(w http.ResponseWriter, r *http.Request) {
-
-	// sending data to template
-	render.RenderTemplate(w, r, "user-profile-edit.page.tmpl", &models.TemplateData{})
-
-}
-
 // ProfilePage is the handler for the user-profile page
 func (m *Repository) ProfilePage(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderTemplate(w, r, "user-profile.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "user-profile-edit.page.tmpl", &models.TemplateData{})
 
 }
