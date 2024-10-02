@@ -1,0 +1,28 @@
+=============================================== Database Tables ===============================================
+
+1. Users
+        id
+        first name
+        last name
+        email
+        password
+        created at
+        updated at
+
+
+2. Notes
+        id
+        user id
+        title
+        content
+        created at
+        updated at
+
+================ OPTIONAL ================
+
+3. Category
+        id
+        notes id
+        name
+        created at
+        updated at
