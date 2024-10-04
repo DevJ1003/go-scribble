@@ -4,10 +4,13 @@ import (
 	"net/http"
 
 	"github.com/devj1003/scribble/internal/config"
+	"github.com/devj1003/scribble/internal/drivers"
 	"github.com/devj1003/scribble/internal/forms"
 	"github.com/devj1003/scribble/internal/helpers"
 	"github.com/devj1003/scribble/internal/models"
 	"github.com/devj1003/scribble/internal/render"
+	"github.com/devj1003/scribble/internal/repository"
+	"github.com/devj1003/scribble/internal/repository/dbrepo"
 )
 
 // Repo the repository used by the handlers
@@ -16,12 +19,14 @@ var Repo *Repository
 // Repository is the repository type
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo // for database
 }
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *drivers.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewMysqlRepo(db.SQL, a), // for database
 	}
 
 }
@@ -59,7 +64,7 @@ func (m *Repository) Login(w http.ResponseWriter, r *http.Request) {
 // CreateNewNote is the handler for the create-note page
 func (m *Repository) CreateNewNote(w http.ResponseWriter, r *http.Request) {
 
-	var emptyReservation models.CreateNote
+	var emptyReservation models.Note
 	data := make(map[string]interface{})
 	data["createnote"] = emptyReservation
 
@@ -81,7 +86,7 @@ func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	createnote := models.CreateNote{
+	createnote := models.Note{
 		Title:   r.Form.Get("title"),
 		Content: r.Form.Get("content"),
 	}
