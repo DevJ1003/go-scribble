@@ -108,6 +108,14 @@ func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	err = m.DB.InsertNote(createnote)
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
+
+	m.App.Session.Put(r.Context(), "createnote", createnote)
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+
 }
 
 // ViewNote is the handler for the create-note page
