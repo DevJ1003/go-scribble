@@ -1,0 +1,29 @@
+Generated example hashed password using the
+function given below on the Go PlayGround in Google Chrome
+
+CODE ===========================================================================
+package main
+
+import (
+	"fmt"
+
+	"golang.org/x/crypto/bcrypt"
+)
+
+func main() {
+
+	password := "password"
+	hashedpassword, _ := bcrypt.GenerateFromPassword([]byte(password), 12)
+	fmt.Println(string(hashedpassword))
+}
+================================================================================
+
+The generated hashed password ==================================================
+$2a$12$Bm8Lm4sv0Ngu1bRiCQuyI.270gpW4flRqu49apuXPaOnsLb9/r6Eu
+================================================================================
+
+
+TO LOGIN VIA AUTH
+
+email : 	dev@gmail.com
+password : 	password

@@ -9,6 +9,7 @@ type User struct {
 	LastName    string
 	Email       string
 	Password    string
+	Age         int
 	AccessLevel int
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
