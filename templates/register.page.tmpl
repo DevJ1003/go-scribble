@@ -14,36 +14,46 @@
                      </div>  
                      <h3 class="mb-2">Sign Up</h3>
                      <p>Create your  account.</p>
-                     <form>
+
+
+                     <form method="post" action="/register">
+                     <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+
                         <div class="row">
                            <div class="col-lg-6">
-                              <div class="floating-label form-group">
-                                 <input class="floating-input form-control" type="text" placeholder=" " required>
-                                 <label>First Name</label>
+                              <div class="form-group">
+                                    {{with .Form.Errors.Get "first_name"}}
+                                        <label class="text-danger">{{.}}</label>
+                                    {{end}}
+                                 <input class="form-control {{with .Form.Errors.Get "first_name"}} is-invalid {{end}}" 
+                                 name="first_name" id="first_name" type="text" placeholder="First name" autocomplete="off" required>
                               </div>
                            </div>
                            <div class="col-lg-6">
-                              <div class="floating-label form-group">
-                                 <input class="floating-input form-control" type="text" placeholder=" " required>
-                                 <label>Last Name</label>
+                              <div class="form-group">
+                                    {{with .Form.Errors.Get "last_name"}}
+                                        <label class="text-danger">{{.}}</label>
+                                    {{end}}
+                                 <input class="form-control {{with .Form.Errors.Get "last_name"}} is-invalid {{end}}"
+                                 name="last_name" id="last_name" type="text" placeholder="Last Name" autocomplete="off" required>
                               </div>
                            </div>
                            <div class="col-lg-12">
-                              <div class="floating-label form-group">
-                                 <input class="floating-input form-control" type="email" placeholder=" " required>
-                                 <label>Email</label>
+                              <div class="form-group">
+                                    {{with .Form.Errors.Get "email"}}
+                                        <label class="text-danger">{{.}}</label>
+                                    {{end}}
+                                 <input class="form-control {{with .Form.Errors.Get "email"}} is-invalid {{end}}" 
+                                 name="email" id="email" type="email" placeholder="Email" autocomplete="off" required>
                               </div>
                            </div>
-                           <div class="col-lg-6">
-                              <div class="floating-label form-group">
-                                 <input class="floating-input form-control" type="password" placeholder=" " required>
-                                 <label>Password</label>
-                              </div>
-                           </div>
-                           <div class="col-lg-6">
-                              <div class="floating-label form-group">
-                                 <input class="floating-input form-control" type="password" placeholder=" " required>
-                                 <label>Confirm Password</label>
+                           <div class="col-lg-12">
+                              <div class="form-group">
+                                    {{with .Form.Errors.Get "password"}}
+                                        <label class="text-danger">{{.}}</label>
+                                    {{end}}
+                                 <input class="form-control {{with .Form.Errors.Get "password"}} is-invalid {{end}}" 
+                                 name="password" id="password" type="password" placeholder="Password" autocomplete="off" required>
                               </div>
                            </div>
                         </div>

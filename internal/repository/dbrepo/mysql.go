@@ -36,6 +36,31 @@ func (m *mysqlDBRepo) InsertNote(note models.Note) error {
 	return nil
 }
 
+// InsertNewUser inserts a new user into the database
+func (m *mysqlDBRepo) InsertNewUser(user models.User) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `INSERT INTO users (first_name, last_name, email, password, access_level, created_at, updated_at)
+				VALUES (?, ?, ?, ?, ?, ?, ?)`
+
+	_, err := m.DB.ExecContext(ctx, query,
+		user.FirstName,
+		user.LastName,
+		user.Email,
+		user.Password,
+		1,
+		time.Now(),
+		time.Now(),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 // GetUserByID returns user by id
 func (m *mysqlDBRepo) GetUserByID(id int) (models.User, error) {
 

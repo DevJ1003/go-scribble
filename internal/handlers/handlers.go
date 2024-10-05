@@ -12,6 +12,7 @@ import (
 	"github.com/devj1003/scribble/internal/render"
 	"github.com/devj1003/scribble/internal/repository"
 	"github.com/devj1003/scribble/internal/repository/dbrepo"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // Repo the repository used by the handlers
@@ -46,11 +47,67 @@ func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// Register is the handler for the register page
+// Home is the handler for the home page
 func (m *Repository) Register(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
-	render.RenderShortTemplate(w, r, "register.page.tmpl", &models.TemplateData{})
+	render.RenderShortTemplate(w, r, "register.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+	})
+
+}
+
+// PostRegister is the handler for the registeration of the user
+func (m *Repository) PostRegister(w http.ResponseWriter, r *http.Request) {
+
+	err := r.ParseForm()
+	if err != nil {
+		// log.Println(err)
+		helpers.ServerError(w, err)
+		return
+	}
+
+	createuser := models.User{
+		FirstName: r.Form.Get("first_name"),
+		LastName:  r.Form.Get("last_name"),
+		Email:     r.Form.Get("email"),
+		Password:  r.Form.Get("password"),
+	}
+
+	form := forms.New(r.PostForm)
+	form.Required("first_name", "last_name", "email", "password")
+
+	if !form.Valid() {
+		data := make(map[string]interface{})
+		data["createuser"] = createuser
+
+		// sending data to template
+		render.RenderShortTemplate(w, r, "register.page.tmpl", &models.TemplateData{
+			// Form: form,
+			// Data: data,
+		})
+
+		return
+	}
+
+	// ==================================================================================
+	// Hashing password
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(createuser.Password), 14)
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
+
+	// sending hashedPassword to the user struct back
+	createuser.Password = string(hashedPassword)
+	// ==================================================================================
+
+	err = m.DB.InsertNewUser(createuser)
+	if err != nil {
+		helpers.ServerError(w, err)
+	}
+
+	m.App.Session.Put(r.Context(), "createuser", createuser)
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
 
 }
 
@@ -97,6 +154,23 @@ func (m *Repository) PostLogin(w http.ResponseWriter, r *http.Request) {
 	m.App.Session.Put(r.Context(), "user_id", id)
 	m.App.Session.Put(r.Context(), "success", "Logged in successfully")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
+
+}
+
+// Logout is the handler for logout
+func (m *Repository) Logout(w http.ResponseWriter, r *http.Request) {
+
+	_ = m.App.Session.Destroy(r.Context())
+	_ = m.App.Session.RenewToken(r.Context())
+
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
+
+}
+
+// Logout is the handler for logout
+func (m *Repository) AdminDashboard(w http.ResponseWriter, r *http.Request) {
+
+	render.RenderTemplate(w, r, "admin-dashboard.page.tmpl", &models.TemplateData{})
 
 }
 
