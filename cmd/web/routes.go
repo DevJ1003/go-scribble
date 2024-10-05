@@ -38,7 +38,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Handle("/static/*", http.StripPrefix("/static/", fileServer))
 
 	mux.Route("/", func(mux chi.Router) {
-		// mux.Use(Auth)
+		mux.Use(Auth)
 		mux.Get("/", handlers.Repo.Home)
 	})
 

@@ -42,8 +42,15 @@ func NewHandlers(r *Repository) {
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 	// perform some logic
 
+	log.Println(m.App.Session.Get(r.Context(), "user_id"))
+
+	data := make(map[string]interface{})
+	data["user_id"] = m.App.Session.Get(r.Context(), "user_id")
+
 	// sending data to template
-	render.RenderTemplate(w, r, "index.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "index.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 
 }
 

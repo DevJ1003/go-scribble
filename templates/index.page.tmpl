@@ -2,6 +2,10 @@
 
 {{define "content"}}
 
+{{$user_id := index .Data "user_id"}}
+
+
+
     <!-- CONTENT -->    
     <div class="content-page">
      <div class="container-fluid note-details">
@@ -10,6 +14,13 @@
                 <div class="card card-block card-stretch">
                     <div class="card-body custom-notes-space">
                         <h3 class="">Your Notes</h3>
+
+
+
+                        <p>{{.}}</p>
+
+
+                        
                         <div class="iq-tab-content">
                             <div class="d-flex flex-wrap align-items-top justify-content-between">
                                 <ul class="d-flex nav nav-pills text-center note-tab mb-3" id="note-pills-tab" role="tablist">                                
