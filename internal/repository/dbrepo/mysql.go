@@ -38,6 +38,32 @@ func (m *mysqlDBRepo) InsertNewUser(user models.User) error {
 	return nil
 }
 
+// Authenticate authenticates a user
+func (m *mysqlDBRepo) Authenticate(email, testPassword string) (int, string, error) {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	var id int
+	var hashedPassword string
+
+	row := m.DB.QueryRowContext(ctx, "SELECT id, password FROM users WHERE email=?", email)
+	err := row.Scan(&id, &hashedPassword)
+	if err != nil {
+		return id, "", err
+	}
+
+	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(testPassword))
+	if err == bcrypt.ErrMismatchedHashAndPassword {
+		return 0, "", errors.New("Incorrect password")
+	} else if err != nil {
+		return 0, "", err
+	}
+
+	return id, hashedPassword, nil
+
+}
+
 // GetUserByID returns user by id
 func (m *mysqlDBRepo) GetUserByID(id int) (models.User, error) {
 
@@ -94,34 +120,8 @@ func (m *mysqlDBRepo) UpdateUser(u models.User) error {
 	return nil
 }
 
-// Authenticate authenticates a user
-func (m *mysqlDBRepo) Authenticate(email, testPassword string) (int, string, error) {
-
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	var id int
-	var hashedPassword string
-
-	row := m.DB.QueryRowContext(ctx, "SELECT id, password FROM users WHERE email=?", email)
-	err := row.Scan(&id, &hashedPassword)
-	if err != nil {
-		return id, "", err
-	}
-
-	err = bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(testPassword))
-	if err == bcrypt.ErrMismatchedHashAndPassword {
-		return 0, "", errors.New("Incorrect password")
-	} else if err != nil {
-		return 0, "", err
-	}
-
-	return id, hashedPassword, nil
-
-}
-
 // InsertNote inserts a note into the database
-func (m *mysqlDBRepo) InsertNote(note models.Note) error {
+func (m *mysqlDBRepo) InsertNote(note models.Note, id int) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
@@ -130,7 +130,7 @@ func (m *mysqlDBRepo) InsertNote(note models.Note) error {
 				VALUES (?, ?, ?, ?, ?)`
 
 	_, err := m.DB.ExecContext(ctx, query,
-		1,
+		id,
 		note.Title,
 		note.Content,
 		time.Now(),
@@ -174,7 +174,7 @@ func (m *mysqlDBRepo) ViewNoteAtIndex(id int) ([]models.Note, error) {
 		if err != nil {
 			return nil, err // Handle scanning error
 		}
-		viewnoteatindex = append(viewnoteatindex, note) // Append each note to the slice
+		viewnoteatindex = append(viewnoteatindex, note)
 	}
 
 	// Check for errors encountered during iteration
@@ -182,6 +182,21 @@ func (m *mysqlDBRepo) ViewNoteAtIndex(id int) ([]models.Note, error) {
 		return nil, err
 	}
 
-	return viewnoteatindex, nil // Return the slice of notes
+	return viewnoteatindex, nil
 
+}
+
+// InsertNote inserts a note into the database
+func (m *mysqlDBRepo) DeleteNote(nid int, id int) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `DELETE FROM notes WHERE id=? AND user_id=?`
+	_, err := m.DB.ExecContext(ctx, query, nid, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

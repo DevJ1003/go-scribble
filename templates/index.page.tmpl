@@ -1,15 +1,5 @@
 {{template "base" .}}
 
-{{define "css"}}
-<style>
-    .limited-text {
-        width: 1px;
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-    }
-</style>
-{{end}}
 
 {{define "content"}}
 
@@ -115,7 +105,7 @@
                                                                 <td>
                                                                     <h4 class="mb-2">{{.Title}}</h4>
                                                                 </td>
-                                                                <td class="limited-text">{{.Content}}</td>
+                                                                <td>{{.Content}}</td>
                                                                 <td>{{humandate .UpdatedAt}}</td>
                                                                 <td>
                                                                     <div>

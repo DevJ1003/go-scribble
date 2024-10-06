@@ -10,6 +10,7 @@ type DatabaseRepo interface {
 	UpdateUser(u models.User) error
 	Authenticate(email, testPassword string) (int, string, error)
 
-	InsertNote(note models.Note) error
+	InsertNote(note models.Note, id int) error
 	ViewNoteAtIndex(id int) ([]models.Note, error)
+	DeleteNote(nid int, id int) error
 }

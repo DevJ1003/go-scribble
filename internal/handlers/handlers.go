@@ -3,6 +3,7 @@ package handlers
 import (
 	"log"
 	"net/http"
+	"strconv"
 
 	"github.com/devj1003/scribble/internal/config"
 	"github.com/devj1003/scribble/internal/drivers"
@@ -12,6 +13,7 @@ import (
 	"github.com/devj1003/scribble/internal/render"
 	"github.com/devj1003/scribble/internal/repository"
 	"github.com/devj1003/scribble/internal/repository/dbrepo"
+	"github.com/go-chi/chi/v5"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -36,40 +38,6 @@ func NewRepo(a *config.AppConfig, db *drivers.DB) *Repository {
 // NewHandlers sets the repository for the handlers
 func NewHandlers(r *Repository) {
 	Repo = r
-}
-
-// Home is the handler for the home page
-func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-
-	// ====================================================================
-	userID := m.App.Session.Get(r.Context(), "user_id")
-	if userID == nil {
-		// Handle the case where user ID is not found in the session
-		http.Error(w, "Unauthorized", http.StatusUnauthorized)
-		return
-	}
-	// ====================================================================
-
-	id, ok := userID.(int)
-	if !ok {
-		http.Error(w, "Invalid user ID", http.StatusInternalServerError)
-		return
-	}
-
-	viewnoteatindex, err := m.DB.ViewNoteAtIndex(id)
-	if err != nil {
-		helpers.ServerError(w, err)
-		return
-	}
-
-	data := make(map[string]interface{})
-	data["viewnoteatindex"] = viewnoteatindex
-
-	// sending data to template
-	render.RenderTemplate(w, r, "index.page.tmpl", &models.TemplateData{
-		Data: data,
-	})
-
 }
 
 // Home is the handler for the home page
@@ -192,10 +160,36 @@ func (m *Repository) Logout(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// Logout is the handler for logout
-func (m *Repository) AdminDashboard(w http.ResponseWriter, r *http.Request) {
+// Home is the handler for the home page
+func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
 
-	render.RenderTemplate(w, r, "admin-dashboard.page.tmpl", &models.TemplateData{})
+	// ====================================================================
+	userID := m.App.Session.Get(r.Context(), "user_id")
+	if userID == nil {
+		// Handle the case where user ID is not found in the session
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	id, ok := userID.(int)
+	if !ok {
+		http.Error(w, "Invalid user ID", http.StatusInternalServerError)
+		return
+	}
+	// ====================================================================
+
+	viewnoteatindex, err := m.DB.ViewNoteAtIndex(id)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["viewnoteatindex"] = viewnoteatindex
+
+	// sending data to template
+	render.RenderTemplate(w, r, "index.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 
 }
 
@@ -230,14 +224,17 @@ func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// ====================================================================
-	// createnote.UserID = m.App.Session.Get(r.Context(), "user_id")
 	userID := m.App.Session.Get(r.Context(), "user_id")
 	if userID == nil {
 		// Handle the case where user ID is not found in the session
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
-	createnote.UserID = userID.(int) // Ensure type assertion is correct
+	id, ok := userID.(int)
+	if !ok {
+		http.Error(w, "Invalid user ID", http.StatusInternalServerError)
+		return
+	}
 	// ====================================================================
 
 	form := forms.New(r.PostForm)
@@ -257,7 +254,7 @@ func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	err = m.DB.InsertNote(createnote)
+	err = m.DB.InsertNote(createnote, id)
 	if err != nil {
 		helpers.ServerError(w, err)
 	}
@@ -280,6 +277,47 @@ func (m *Repository) EditNote(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
 	render.RenderTemplate(w, r, "edit-note.page.tmpl", &models.TemplateData{})
+
+}
+
+// DeleteNote is the handler to delete note
+func (m *Repository) DeleteNote(w http.ResponseWriter, r *http.Request) {
+
+	nidStr := chi.URLParam(r, "nid")
+	// Convert the string to an integer
+	nid, err := strconv.Atoi(nidStr)
+	if err != nil {
+		http.Error(w, "Invalid note ID", http.StatusBadRequest)
+		return
+	}
+	// ====================================================================
+	userID := m.App.Session.Get(r.Context(), "user_id")
+	if userID == nil {
+		// Handle the case where user ID is not found in the session
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	id, ok := userID.(int)
+	if !ok {
+		http.Error(w, "Invalid user ID", http.StatusInternalServerError)
+		return
+	}
+	// ====================================================================
+	err = m.DB.DeleteNote(nid, id)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	// m.App.Session.Put(r.Context(), "success", "Note deleted!")
+	http.Redirect(w, r, "/", http.StatusSeeOther)
+
+}
+
+// AdminDashboard is the handler for admin dashboard page
+func (m *Repository) AdminDashboard(w http.ResponseWriter, r *http.Request) {
+
+	render.RenderTemplate(w, r, "admin-dashboard.page.tmpl", &models.TemplateData{})
 
 }
 
