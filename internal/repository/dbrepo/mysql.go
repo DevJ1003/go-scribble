@@ -142,3 +142,46 @@ func (m *mysqlDBRepo) InsertNote(note models.Note) error {
 
 	return nil
 }
+
+// ViewNoteAtIndex returns all notes by id for index page
+func (m *mysqlDBRepo) ViewNoteAtIndex(id int) ([]models.Note, error) {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `SELECT id, title, content, created_at, updated_at FROM notes
+				WHERE user_id = ?`
+
+	rows, err := m.DB.QueryContext(ctx, query, id)
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	var viewnoteatindex []models.Note
+
+	// iterate over the rows
+	for rows.Next() {
+		var note models.Note
+		err := rows.Scan(
+			&note.ID,
+			&note.Title,
+			&note.Content,
+			&note.CreatedAt,
+			&note.UpdatedAt,
+		)
+		if err != nil {
+			return nil, err // Handle scanning error
+		}
+		viewnoteatindex = append(viewnoteatindex, note) // Append each note to the slice
+	}
+
+	// Check for errors encountered during iteration
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return viewnoteatindex, nil // Return the slice of notes
+
+}

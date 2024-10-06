@@ -11,4 +11,5 @@ type DatabaseRepo interface {
 	Authenticate(email, testPassword string) (int, string, error)
 
 	InsertNote(note models.Note) error
+	ViewNoteAtIndex(id int) ([]models.Note, error)
 }

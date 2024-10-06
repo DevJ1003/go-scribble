@@ -40,12 +40,30 @@ func NewHandlers(r *Repository) {
 
 // Home is the handler for the home page
 func (m *Repository) Home(w http.ResponseWriter, r *http.Request) {
-	// perform some logic
 
-	log.Println(m.App.Session.Get(r.Context(), "user_id"))
+	// ====================================================================
+	userID := m.App.Session.Get(r.Context(), "user_id")
+	if userID == nil {
+		// Handle the case where user ID is not found in the session
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	// ====================================================================
+
+	id, ok := userID.(int)
+	if !ok {
+		http.Error(w, "Invalid user ID", http.StatusInternalServerError)
+		return
+	}
+
+	viewnoteatindex, err := m.DB.ViewNoteAtIndex(id)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
 
 	data := make(map[string]interface{})
-	data["user_id"] = m.App.Session.Get(r.Context(), "user_id")
+	data["viewnoteatindex"] = viewnoteatindex
 
 	// sending data to template
 	render.RenderTemplate(w, r, "index.page.tmpl", &models.TemplateData{
@@ -210,6 +228,17 @@ func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 		Title:   r.Form.Get("title"),
 		Content: r.Form.Get("content"),
 	}
+
+	// ====================================================================
+	// createnote.UserID = m.App.Session.Get(r.Context(), "user_id")
+	userID := m.App.Session.Get(r.Context(), "user_id")
+	if userID == nil {
+		// Handle the case where user ID is not found in the session
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	createnote.UserID = userID.(int) // Ensure type assertion is correct
+	// ====================================================================
 
 	form := forms.New(r.PostForm)
 	form.Required("title", "content")

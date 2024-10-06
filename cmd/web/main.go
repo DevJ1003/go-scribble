@@ -72,7 +72,7 @@ func run() (*drivers.DB, error) {
 
 	// connect to the database =========================================================
 	fmt.Println("Connecting to the database...")
-	db, err := drivers.ConnectSQL("root:password@tcp(127.0.0.1:3306)/scribble")
+	db, err := drivers.ConnectSQL("root:password@tcp(127.0.0.1:3306)/scribble?parseTime=true")
 	if err != nil {
 		log.Fatal("Cannot connect to the database, Dying...")
 	}

@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"time"
 
 	"github.com/devj1003/scribble/internal/config"
 	"github.com/devj1003/scribble/internal/models"
@@ -17,6 +18,11 @@ var app *config.AppConfig
 // NewRenderer sets the config for the template package
 func NewRenderer(a *config.AppConfig) {
 	app = a
+}
+
+// // HumanDate returns the date in YYYY-MM-DD format
+func HumanDate(t time.Time) string {
+	return t.Format("2006-01-02")
 }
 
 func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
@@ -68,7 +74,10 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 	// range through all files ending with *.page.tmpl
 	for _, page := range pages {
 		name := filepath.Base(page)
-		ts, err := template.New(name).ParseFiles(page)
+
+		ts, err := template.New(name).Funcs(template.FuncMap{
+			"humandate": HumanDate,
+		}).ParseFiles(page)
 		if err != nil {
 			return myCache, err
 		}
@@ -131,7 +140,9 @@ func CreateShortTemplateCache() (map[string]*template.Template, error) {
 	// range through all files ending with *.page.tmpl
 	for _, page := range pages {
 		name := filepath.Base(page)
-		ts, err := template.New(name).ParseFiles(page)
+		ts, err := template.New(name).Funcs(template.FuncMap{
+			"humandate": HumanDate,
+		}).ParseFiles(page)
 		if err != nil {
 			return myCache, err
 		}

@@ -1,8 +1,22 @@
 {{template "base" .}}
 
+{{define "css"}}
+<style>
+    .limited-text {
+        width: 1px;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+</style>
+{{end}}
+
 {{define "content"}}
 
 {{$user_id := index .Data "user_id"}}
+
+
+
 
 
 
@@ -13,13 +27,7 @@
             <div class="col-lg-12">                
                 <div class="card card-block card-stretch">
                     <div class="card-body custom-notes-space">
-                        <h3 class="">Your Notes</h3>
-
-
-
-
-
-                        
+                        <h3 class="">Your Notes</h3> 
                         <div class="iq-tab-content">
                             <div class="d-flex flex-wrap align-items-top justify-content-between">
                                 <ul class="d-flex nav nav-pills text-center note-tab mb-3" id="note-pills-tab" role="tablist">                                
@@ -37,11 +45,17 @@
                                         <span class="label label-list">List</span>
                                     </div>
                                 </div>          
-                            </div>             
+                            </div>    
+
+
+                            
+                            
                             <div class="note-content tab-content">                                
                                 <div id="note1" class="tab-pane fade active show">
                                     <div class="icon active animate__animated animate__fadeIn i-grid">
                                         <div class="row">
+                                        {{$viewnote := index .Data "viewnoteatindex"}}
+                                        {{range $viewnote}}
                                             <div class="col-lg-4 col-md-6">
                                                 <div class="card card-block card-stretch card-height card-bottom-border-info note-detail">
                                                     <div class="card-header d-flex justify-content-between pb-1">
@@ -58,26 +72,27 @@
                                                                 </span>
                                                                 <div class="dropdown-menu dropdown-menu-right"
                                                                     aria-labelledby="note-dropdownMenuButton4" style="">
-                                                                    <a href="/viewnote" class="dropdown-item new-note9"><i class="las la-eye mr-3"></i>View</a>
-                                                                    <a href="/editnote" class="dropdown-item edit-note1"><i class="las la-pen mr-3"></i>Edit</a>
-                                                                    <a href="/deletenote" class="dropdown-item" data-extra-toggle="delete" data-closest-elem=".card"><i class="las la-trash-alt mr-3"></i>Delete</a>
+                                                                    <a href="/viewnote/{{.ID}}" class="dropdown-item new-note9"><i class="las la-eye mr-3"></i>View</a>
+                                                                    <a href="/editnote/{{.ID}}" class="dropdown-item edit-note1"><i class="las la-pen mr-3"></i>Edit</a>
+                                                                    <a href="/deletenote/{{.ID}}" class="dropdown-item" data-extra-toggle="delete" data-closest-elem=".card"><i class="las la-trash-alt mr-3"></i>Delete</a>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <div class="card-body rounded">
-                                                        <h4 class="card-title">NotePlus for Entrepreneurs</h4>
-                                                        <p class="mb-3 card-description short">With NotePlus, you can easily share via message, WhatsApp, emails etc. You can also save your notes and edit it later or can easily delete the note.</p>                                                            
+                                                    
+                                                        <h4 class="card-title">{{.Title}}</h4>
+                                                        <p class="mb-3 card-description short">{{.Content}}</p>                                                            
                                                     </div>
                                                     <div class="card-footer">
                                                         <div class="d-flex align-items-center justify-content-between note-text note-text-info">
-                                                            <a href="#" class=""><i class="las la-calendar mr-2 font-size-20"></i>12 Jan 2021</a>
+                                                            <a href="#" class=""><i class="las la-calendar mr-2 font-size-20"></i>{{humandate .CreatedAt}}</a>
                                                         </div>
                                                     </div>
+                                                    
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="row">
+                                        {{end}}
                                         </div>
                                     </div>
                                     <div class="icon active animate__animated animate__fadeIn i-list">
@@ -87,103 +102,30 @@
                                                     <table class="table  tbl-server-info">
                                                         <thead>
                                                             <tr class="ligth">
-                                                                <th class="w-50" scope="col">Title</th>
-                                                                <th scope="col">Created At</th>
+                                                                <th scope="col">Title</th>
+                                                                <th class="w-50" scope="col">Content</th>
                                                                 <th scope="col">Updated At</th>
                                                                 <th scope="col">Action</th>
                                                             </tr>
                                                         </thead>
                                                         <tbody>
+                                                        {{$viewnote := index .Data "viewnoteatindex"}}
+                                                        {{range $viewnote}}
                                                             <tr>
                                                                 <td>
-                                                                    <h4 class="mb-2">Essay Outline</h4>
+                                                                    <h4 class="mb-2">{{.Title}}</h4>
                                                                 </td>
-                                                                <td>Dec 20</td>
-                                                                <td>Dec 20</td>
+                                                                <td class="limited-text">{{.Content}}</td>
+                                                                <td>{{humandate .UpdatedAt}}</td>
                                                                 <td>
                                                                     <div>
-                                                                        <a href="/viewnote" class="badge badge-success mr-3"><i class="las la-eye"></i></a>
-                                                                        <a href="/editnote" class="badge badge-success mr-3"><i class="las la-pen mr-0"></i></a>
-                                                                        <a href="/deletenote" class="badge badge-danger" data-extra-toggle="delete" data-closest-elem="tr"><i class="las la-trash-alt mr-0"></i></a>
+                                                                        <a href="/viewnote/{{.ID}}" class="badge badge-success mr-3"><i class="las la-eye"></i></a>
+                                                                        <a href="/editnote/{{.ID}}" class="badge badge-success mr-3"><i class="las la-pen mr-0"></i></a>
+                                                                        <a href="/deletenote/{{.ID}}" class="badge badge-danger" data-extra-toggle="delete" data-closest-elem="tr"><i class="las la-trash-alt mr-0"></i></a>
                                                                     </div>
                                                                 </td>
                                                             </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="note4" class="tab-pane fade">
-                                    <div class="icon active animate__animated animate__fadeIn i-grid">
-                                        <div class="row">
-                                            <div class="col-lg-4 col-md-6">
-                                                <div class="card card-block card-stretch card-height card-bottom-border-info note-detail">
-                                                    <div class="card-header d-flex justify-content-between pb-1">
-                                                        <div class="icon iq-icon-box-2 icon-border-info rounded">
-                                                            <svg width="23" height="23" class="svg-icon" id="iq-main-24" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                                <path fill-rule="evenodd" d="M5 3a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2V5a2 2 0 00-2-2H5zm0 2h10v7h-2l-1 2H8l-1-2H5V5z" clip-rule="evenodd" />
-                                                            </svg>
-                                                        </div>
-                                                        <div class="card-header-toolbar d-flex align-items-center">                                                                     
-                                                            <div class="card-header-toolbar d-flex align-items-center">
-                                                                <div class="dropdown">
-                                                                    <span class="dropdown-toggle dropdown-bg" id="note-dropdownMenuButton27"
-                                                                        data-toggle="dropdown" aria-expanded="false" role="button">
-                                                                        <i class="ri-more-fill"></i>
-                                                                    </span>
-                                                                    <div class="dropdown-menu dropdown-menu-right"
-                                                                        aria-labelledby="note-dropdownMenuButton27" style="">
-                                                                        <a href="/viewnote" class="dropdown-item new-note9"><i class="las la-eye mr-3"></i>View</a>
-                                                                        <a href="/editnote" class="dropdown-item edit-note1"><i class="las la-pen mr-3"></i>Edit</a>
-                                                                        <a href="/deletenote" class="dropdown-item" data-extra-toggle="delete" data-closest-elem=".card"><i class="las la-trash-alt mr-3"></i>Delete</a>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="card-body rounded">
-                                                        <h4 class="card-title">NotePlus for Entrepreneurs</h4>
-                                                        <p class="mb-3 card-description short">With NotePlus, you can easily share via message, WhatsApp, emails etc. You can also save your notes and edit it later or can easily delete the note.</p>                                                            
-                                                    </div>
-                                                    <div class="card-footer">
-                                                        <div class="d-flex align-items-center justify-content-between note-text note-text-info">                                                         
-                                                            <a href="#" class=""><i class="las la-calendar mr-2 font-size-20"></i>12 Jan 2021</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>   
-                                        </div>
-                                    </div>
-                                    <div class="icon active animate__animated animate__fadeIn i-list">
-                                        <div class="row">                                            
-                                            <div class="col-lg-12">
-                                                <div class="table-responsive">
-                                                    <table class="table  tbl-server-info">
-                                                        <thead>
-                                                            <tr class="ligth">
-                                                                <th class="w-50" scope="col">Title</th>
-                                                                <th scope="col">Created At</th>
-                                                                <th scope="col">Updated At</th>
-                                                                <th scope="col">Action</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td>
-                                                                    <h4 class="mb-2">Essay Outline</h4>
-                                                                </td>
-                                                                <td>Dec 20</td>
-                                                                <td>Dec 20</td>
-                                                                <td>
-                                                                    <div>
-                                                                        <a href="/viewnote" class="badge badge-success mr-3"><i class="las la-eye"></i></a>
-                                                                        <a href="/editnote" class="badge badge-success mr-3"><i class="las la-pen mr-0"></i></a>
-                                                                        <a href="/deletenote" class="badge badge-danger" data-extra-toggle="delete" data-closest-elem="tr"><i class="las la-trash-alt mr-0"></i></a>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+                                                        {{end}}
                                                         </tbody>
                                                     </table>
                                                 </div>
@@ -192,10 +134,12 @@
                                     </div>
                                 </div>
                             </div> 
+                            
                         </div>
                     </div>
                 </div>
             </div>
+            
         </div>
         <!-- Page end  -->
     </div>
