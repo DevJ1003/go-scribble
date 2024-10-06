@@ -13,29 +13,6 @@ func (m *mysqlDBRepo) AllUsers() bool {
 	return true
 }
 
-// InsertNote inserts a note into the database
-func (m *mysqlDBRepo) InsertNote(note models.Note) error {
-
-	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
-	defer cancel()
-
-	query := `INSERT INTO notes (user_id, title, content, created_at, updated_at)
-				VALUES (?, ?, ?, ?, ?)`
-
-	_, err := m.DB.ExecContext(ctx, query,
-		1,
-		note.Title,
-		note.Content,
-		time.Now(),
-		time.Now(),
-	)
-	if err != nil {
-		return err
-	}
-
-	return nil
-}
-
 // InsertNewUser inserts a new user into the database
 func (m *mysqlDBRepo) InsertNewUser(user models.User) error {
 
@@ -141,4 +118,27 @@ func (m *mysqlDBRepo) Authenticate(email, testPassword string) (int, string, err
 
 	return id, hashedPassword, nil
 
+}
+
+// InsertNote inserts a note into the database
+func (m *mysqlDBRepo) InsertNote(note models.Note) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `INSERT INTO notes (user_id, title, content, created_at, updated_at)
+				VALUES (?, ?, ?, ?, ?)`
+
+	_, err := m.DB.ExecContext(ctx, query,
+		1,
+		note.Title,
+		note.Content,
+		time.Now(),
+		time.Now(),
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
