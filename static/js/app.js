@@ -309,7 +309,7 @@ Index Of Script
         var favGrid = null;
         var pinGrid = null;
         function initMurri (type) {
-            console.log(type)
+            // console.log(type);
             switch (type) {
                 case 'shared-note':
                     if (!$('.shared-note-grid').hasClass('muuri')) {
@@ -413,7 +413,10 @@ Index Of Script
     })
 
     $('[data-extra-toggle="delete"]').on('click', function (e) {
+        e.preventDefault();
         const closestElem = $(this).attr('data-closest-elem')
+        const noteId = $(this).attr('note-id')
+        console.log(noteId);
         const swalWithBootstrapButtons = Swal.mixin({
             customClass: {
               confirmButton: 'btn btn-primary',
@@ -437,6 +440,7 @@ Index Of Script
         })
         .then((willDelete) => {
             if (willDelete.isConfirmed) {
+                window.location.href = "/deletenote/" + noteId;
                 swalWithBootstrapButtons.fire({
                         title: 'Deleted!',
                         text: "Your note has been deleted.",
