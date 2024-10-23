@@ -12,5 +12,7 @@ type DatabaseRepo interface {
 
 	InsertNote(note models.Note, id int) error
 	ViewNoteAtIndex(id int) ([]models.Note, error)
+	ViewNoteData(nid int, id int) (models.Note, error)
+	UpdateNote(u models.Note) error
 	DeleteNote(nid int, id int) error
 }

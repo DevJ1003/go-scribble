@@ -15,6 +15,9 @@
 {{define "content"}}
  <input type="hidden" id="submit" value="false">
 
+ {{$viewnotedata := index .Data "viewnotedata"}}
+ {{$src := index .StringMap "src"}}
+
 <div class="content-page">
     <div class="container-fluid">
         <div class="desktop-header">
@@ -30,14 +33,15 @@
                 <div class="col-lg-15">
             
         <div class="noteform">
-            <form action="/updatenote" method="post">
+            <form action="/editnote/{{$src}}/{{$viewnotedata.ID}}" method="post">
             <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
                 <div class="form-group">
                     <label for="title">Note Title</label>
-                    <input name="title" type="text" class="form-control" id="title" placeholder="Enter note title" required>
+                    <input name="title" type="text" class="form-control" id="title" placeholder="Enter note title" 
+                    value="{{$viewnotedata.Title}}" required>
                 </div>
                 <div class="form-group">
-                    <textarea id="texteditor" name="content"></textarea>
+                    <textarea id="texteditor" name="content" value="{{$viewnotedata.Title}}"></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary">Update</button>
             </form>

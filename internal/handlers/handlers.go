@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -40,7 +41,7 @@ func NewHandlers(r *Repository) {
 	Repo = r
 }
 
-// Home is the handler for the home page
+// Register is the handler for the register page
 func (m *Repository) Register(w http.ResponseWriter, r *http.Request) {
 
 	// sending data to template
@@ -267,16 +268,103 @@ func (m *Repository) PostCreateNewNote(w http.ResponseWriter, r *http.Request) {
 // ViewNote is the handler for the create-note page
 func (m *Repository) ViewNote(w http.ResponseWriter, r *http.Request) {
 
+	nidStr := chi.URLParam(r, "nid")
+	// Convert the string to an integer
+	nid, err := strconv.Atoi(nidStr)
+	if err != nil {
+		http.Error(w, "Invalid note ID", http.StatusBadRequest)
+		return
+	}
+
+	// ====================================================================
+	userID := m.App.Session.Get(r.Context(), "user_id")
+	if userID == nil {
+		// Handle the case where user ID is not found in the session
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	id, ok := userID.(int)
+	if !ok {
+		http.Error(w, "Invalid user ID", http.StatusInternalServerError)
+		return
+	}
+	// ====================================================================
+
+	viewnotedata, err := m.DB.ViewNoteData(nid, id)
+	if err != nil {
+		log.Println("Error fetching note data:", err)
+		helpers.ServerError(w, err)
+		return
+	}
+
+	data := make(map[string]interface{})
+	data["viewnotedata"] = viewnotedata
+
 	// sending data to template
-	render.RenderTemplate(w, r, "view-note.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(w, r, "view-note.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 
 }
 
 // EditNote is the handler for the edit-note page
 func (m *Repository) EditNote(w http.ResponseWriter, r *http.Request) {
 
+	nidStr := chi.URLParam(r, "nid")
+	// Convert the string to an integer
+	nid, err := strconv.Atoi(nidStr)
+	if err != nil {
+		http.Error(w, "Invalid note ID", http.StatusBadRequest)
+		return
+	}
+
+	// ====================================================================
+	userID := m.App.Session.Get(r.Context(), "user_id")
+	if userID == nil {
+		// Handle the case where user ID is not found in the session
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
+	id, ok := userID.(int)
+	if !ok {
+		http.Error(w, "Invalid user ID", http.StatusInternalServerError)
+		return
+	}
+	// ====================================================================
+
+	// exploded := strings.Split(r.RequestURI, "/")
+	// src := exploded[3]
+	// stringMap := make(map[string]string)
+	// stringMap["src"] = src
+
+	viewnotedata, err := m.DB.ViewNoteData(nid, id)
+	if err != nil {
+		log.Println("Error fetching note data:", err)
+		helpers.ServerError(w, err)
+		return
+	}
+
+	viewnotedata.Title = r.Form.Get("title")
+	viewnotedata.Content = r.Form.Get("content")
+
+	err = m.DB.UpdateNote(viewnotedata)
+	if err != nil {
+		helpers.ServerError(w, err)
+		return
+	}
+
+	title := r.Form.Get("title")
+	content := r.Form.Get("content")
+
+	if content == "" {
+		http.Redirect(w, r, fmt.Sprintf("/viewnote-%s", nid), http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, fmt.Sprintf("/viewnote?%s%s", title, content), http.StatusSeeOther)
+	}
+
 	// sending data to template
-	render.RenderTemplate(w, r, "edit-note.page.tmpl", &models.TemplateData{})
+	// render.RenderTemplate(w, r, "edit-note.page.tmpl", &models.TemplateData{})
+	// http.Redirect(w, r, "/", http.StatusSeeOther)
 
 }
 

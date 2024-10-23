@@ -186,7 +186,33 @@ func (m *mysqlDBRepo) ViewNoteAtIndex(id int) ([]models.Note, error) {
 
 }
 
-// InsertNote inserts a note into the database
+// ViewNoteData shows the note data using note id
+func (m *mysqlDBRepo) ViewNoteData(nid int, id int) (models.Note, error) {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `SELECT * FROM notes WHERE id=? AND user_id=?`
+
+	row := m.DB.QueryRowContext(ctx, query, nid, id)
+	var notedata models.Note
+	err := row.Scan(
+		&notedata.ID,
+		&notedata.UserID,
+		&notedata.Title,
+		&notedata.Content,
+		&notedata.CreatedAt,
+		&notedata.UpdatedAt,
+	)
+	if err != nil {
+		return notedata, err
+	}
+
+	return notedata, nil
+
+}
+
+// DeleteNote deletes a note from the database
 func (m *mysqlDBRepo) DeleteNote(nid int, id int) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
@@ -194,6 +220,26 @@ func (m *mysqlDBRepo) DeleteNote(nid int, id int) error {
 
 	query := `DELETE FROM notes WHERE id=? AND user_id=?`
 	_, err := m.DB.ExecContext(ctx, query, nid, id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+// UpdateNote updates a note in the database
+func (m *mysqlDBRepo) UpdateNote(u models.Note) error {
+
+	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
+	defer cancel()
+
+	query := `UPDATE notes SET title=?, content=?, updated_at=?`
+	_, err := m.DB.ExecContext(ctx, query,
+		u.Title,
+		u.Content,
+		time.Now(),
+	)
+
 	if err != nil {
 		return err
 	}

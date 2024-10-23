@@ -27,7 +27,7 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/createnote", handlers.Repo.CreateNewNote)
 	mux.Post("/createnote", handlers.Repo.PostCreateNewNote)
 	mux.Get("/viewnote/{nid}", handlers.Repo.ViewNote)
-	mux.Get("/editnote/{nid}", handlers.Repo.EditNote)
+	mux.Post("/editnote/{nid}", handlers.Repo.EditNote)
 	mux.Get("/deletenote/{nid}", handlers.Repo.DeleteNote)
 	mux.Get("/blank", handlers.Repo.Blank)
 	mux.Get("/error500", handlers.Repo.Error500)
