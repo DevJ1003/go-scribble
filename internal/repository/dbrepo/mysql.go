@@ -228,16 +228,18 @@ func (m *mysqlDBRepo) DeleteNote(nid int, id int) error {
 }
 
 // UpdateNote updates a note in the database
-func (m *mysqlDBRepo) UpdateNote(u models.Note) error {
+func (m *mysqlDBRepo) UpdateNote(u models.Note, nid int, id int) error {
 
 	ctx, cancel := context.WithTimeout(context.Background(), 3*time.Second)
 	defer cancel()
 
-	query := `UPDATE notes SET title=?, content=?, updated_at=?`
+	query := `UPDATE notes SET title=?, content=?, updated_at=? WHERE id=? AND user_id=?`
 	_, err := m.DB.ExecContext(ctx, query,
 		u.Title,
 		u.Content,
 		time.Now(),
+		nid,
+		id,
 	)
 
 	if err != nil {

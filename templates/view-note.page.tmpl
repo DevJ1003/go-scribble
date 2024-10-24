@@ -20,13 +20,13 @@
                 <div class="card">
                   <div class="card-header d-flex justify-content-between" style="background-color: #1f1c2f;">
                      <div class="header-title">
-                        <h4 class="card-title" style="color: white;">{{$viewnotedata.Title}}, last updated at: {{humandate $viewnotedata.UpdatedAt}}</h4>
+                        <h4 class="card-title" style="color: white;">{{$viewnotedata.Title}}</h4>
                      </div>
                   </div>
                   <div class="card-body">
                      <div class="list-group">
                         <a class="list-group-item list-group-item-action">
-                           <p class="xl-1">{{$viewnotedata.Content}}</p>
+                           <p class="xl-1" name="content">{{$viewnotedata.Content}}</p>
                         </a>
                      </div>
                   </div>

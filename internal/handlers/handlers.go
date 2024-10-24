@@ -307,21 +307,89 @@ func (m *Repository) ViewNote(w http.ResponseWriter, r *http.Request) {
 
 }
 
-// EditNote is the handler for the edit-note page
-func (m *Repository) EditNote(w http.ResponseWriter, r *http.Request) {
+// // EditNote is the handler for the edit-note page
+// func (m *Repository) EditNote(w http.ResponseWriter, r *http.Request) {
 
+// 	nidStr := chi.URLParam(r, "nid")
+// 	// Convert the string to an integer
+// 	nid, err := strconv.Atoi(nidStr)
+// 	if err != nil {
+// 		http.Error(w, "Invalid note ID", http.StatusBadRequest)
+// 		return
+// 	}
+
+// 	// ====================================================================
+// 	userID := m.App.Session.Get(r.Context(), "user_id")
+// 	if userID == nil {
+// 		// Handle the case where user ID is not found in the session
+// 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+// 		return
+// 	}
+// 	id, ok := userID.(int)
+// 	if !ok {
+// 		http.Error(w, "Invalid user ID", http.StatusInternalServerError)
+// 		return
+// 	}
+// 	// ====================================================================
+
+// 	// exploded := strings.Split(r.RequestURI, "/")
+// 	// src := exploded[3]
+// 	// stringMap := make(map[string]string)
+// 	// stringMap["src"] = src
+
+// 	viewnotedata, err := m.DB.ViewNoteData(nid, id)
+// 	if err != nil {
+// 		log.Println("Error fetching note data:", err)
+// 		helpers.ServerError(w, err)
+// 		return
+// 	}
+
+// 	// viewnotedata.Title = r.Form.Get("title")
+// 	// viewnotedata.Content = r.Form.Get("content")
+// 	if r.Method == http.MethodPost {
+// 		err := r.ParseForm()
+// 		if err != nil {
+// 			http.Error(w, "Unable to parse form", http.StatusBadRequest)
+// 			return
+// 		}
+// 		// Now access form values
+// 		viewnotedata.Title = r.Form.Get("title")
+// 		viewnotedata.Content = r.Form.Get("content")
+// 	}
+
+// 	err = m.DB.UpdateNote(viewnotedata)
+// 	if err != nil {
+// 		helpers.ServerError(w, err)
+// 		return
+// 	}
+
+// 	title := r.Form.Get("title")
+// 	content := r.Form.Get("content")
+
+// 	if content == "" {
+// 		http.Redirect(w, r, fmt.Sprintf("/viewnote/%d", nid), http.StatusSeeOther)
+// 	} else {
+// 		http.Redirect(w, r, fmt.Sprintf("/viewnote?nid=%d&title=%s&content=%s", nid, title, content), http.StatusSeeOther)
+// 	}
+
+// 	// sending data to template
+// 	// render.RenderTemplate(w, r, "edit-note.page.tmpl", &models.TemplateData{})
+// 	// http.Redirect(w, r, "/", http.StatusSeeOther)
+
+// }
+
+func (m *Repository) EditNote(w http.ResponseWriter, r *http.Request) {
+	// Fetching the note ID from the URL
 	nidStr := chi.URLParam(r, "nid")
-	// Convert the string to an integer
 	nid, err := strconv.Atoi(nidStr)
 	if err != nil {
 		http.Error(w, "Invalid note ID", http.StatusBadRequest)
 		return
 	}
 
-	// ====================================================================
+	// Fetching the user ID from the session
 	userID := m.App.Session.Get(r.Context(), "user_id")
 	if userID == nil {
-		// Handle the case where user ID is not found in the session
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 		return
 	}
@@ -330,13 +398,8 @@ func (m *Repository) EditNote(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid user ID", http.StatusInternalServerError)
 		return
 	}
-	// ====================================================================
 
-	// exploded := strings.Split(r.RequestURI, "/")
-	// src := exploded[3]
-	// stringMap := make(map[string]string)
-	// stringMap["src"] = src
-
+	// Fetch the note data
 	viewnotedata, err := m.DB.ViewNoteData(nid, id)
 	if err != nil {
 		log.Println("Error fetching note data:", err)
@@ -344,28 +407,41 @@ func (m *Repository) EditNote(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	viewnotedata.Title = r.Form.Get("title")
-	viewnotedata.Content = r.Form.Get("content")
+	// Handle form submission
+	if r.Method == http.MethodPost {
+		err = r.ParseForm()
+		if err != nil {
+			log.Println(err)
+			helpers.ServerError(w, err)
+			return
+		}
 
-	err = m.DB.UpdateNote(viewnotedata)
-	if err != nil {
-		helpers.ServerError(w, err)
+		// Update note data with form values
+		viewnotedata.Title = r.Form.Get("title")
+		viewnotedata.Content = r.Form.Get("content")
+
+		// Now call UpdateNote with correct nid and id
+		err = m.DB.UpdateNote(viewnotedata, nid, id)
+		if err != nil {
+			log.Println("Error updating note:", err)
+			helpers.ServerError(w, err)
+			return
+		}
+
+		// Redirect after update
+		http.Redirect(w, r, fmt.Sprintf("/viewnote/%d", nid), http.StatusSeeOther)
 		return
 	}
 
-	title := r.Form.Get("title")
-	content := r.Form.Get("content")
+	// Render the edit note page (GET request)
+	data := make(map[string]interface{})
+	data["editnotedata"] = viewnotedata
 
-	if content == "" {
-		http.Redirect(w, r, fmt.Sprintf("/viewnote-%s", nid), http.StatusSeeOther)
-	} else {
-		http.Redirect(w, r, fmt.Sprintf("/viewnote?%s%s", title, content), http.StatusSeeOther)
+	editdata := &models.TemplateData{
+		Data: data, // Pass the note data to the template
 	}
 
-	// sending data to template
-	// render.RenderTemplate(w, r, "edit-note.page.tmpl", &models.TemplateData{})
-	// http.Redirect(w, r, "/", http.StatusSeeOther)
-
+	render.RenderTemplate(w, r, "edit-note.page.tmpl", editdata)
 }
 
 // DeleteNote is the handler to delete note
